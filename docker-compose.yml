@@ -1,11 +1,28 @@
 version: '3'
 services:
+
+  db:
+    container_name: dev-postgres
+    restart: always
+    image: postgres:12
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass4admin
+      POSTGRES_DB: airflow
+
   airflow:
     container_name: airflow
+    restart: always
     build:
       context: .
     image: dev-airflow
     ports:
       - 8080:80
+    environment:
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://admin:pass4admin@db:5432/airflow"
+      AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
     volumes:
+      - ./datalake/:/datalake/
       - ./dags/:/airflow/dags/
+      - /var/run/:/var/run/
