@@ -11,7 +11,7 @@
 
 docker_build() {
     echo "Building job '$1'..."
-    job_path="jobs/$1"
+    job_path="./$1"
     if test -d "$job_path"; then
         cd "$job_path" && docker build -f "Dockerfile" -t "$1" . && cd -
     else
@@ -19,8 +19,10 @@ docker_build() {
     fi
 }
 
+cd "$(dirname $0)"
 docker_build "app-broken"
 docker_build "app-extractor"
 docker_build "app-processor"
+cd -
 
 exit 0

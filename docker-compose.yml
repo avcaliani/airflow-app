@@ -13,6 +13,8 @@ services:
   airflow:
     container_name: airflow
     restart: always
+    depends_on:
+      - db
     build:
       context: .
     image: dev-airflow
@@ -22,7 +24,9 @@ services:
       AIRFLOW__CORE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://admin:pass4admin@db:5432/airflow"
       AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      DATALAKE_HOST: "$DATALAKE_HOST_PATH/datalake"
     volumes:
+      - ./airflow/dags/:/airflow/dags/
+      - ./airflow/scripts/:/airflow/scripts/
       - ./datalake/:/datalake/
-      - ./dags/:/airflow/dags/
       - /var/run/:/var/run/

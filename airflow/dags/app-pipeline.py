@@ -1,11 +1,14 @@
+from os import environ
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.docker_operator import DockerOperator
 
-args = {
+
+SCRIPTS_PATH  = environ.get('SCRIPTS_PATH', '/airflow/scripts')
+DATALAKE_HOST = environ.get('DATALAKE_HOST', './')
+ARGS = {
     'owner'            : 'avcaliani',
     'description'      : 'App Pipeline',
     'depend_on_past'   : False,
@@ -16,12 +19,14 @@ args = {
     'retry_delay'      : timedelta(minutes=1)
 }
 
-with DAG('app-pipeline', default_args=args, schedule_interval='*/15 * * * *', catchup=False) as dag:
 
-    # TODO: Create initialize script
-    initialize = BashOperator(task_id='initialize', bash_command='mkdir -p /datalake/logs/app-broken')
+with DAG('app-pipeline', default_args=ARGS, schedule_interval='*/15 * * * *', catchup=False) as dag:
 
-    # FIXME: Fix Volume (Host)
+    app_initialize = BashOperator(
+        task_id='app-initialize',
+        bash_command=f'bash {SCRIPTS_PATH}/app-initialize.sh\n'
+    )
+
     app_broken = DockerOperator(
         task_id='app-broken',
         image='app-broken:latest',
@@ -29,11 +34,13 @@ with DAG('app-pipeline', default_args=args, schedule_interval='*/15 * * * *', ca
         auto_remove=True,
         network_mode='bridge',
         environment={'LOG_PATH': '/app-logs'},
-        volumes=['/Users/anthony.caliani/Documents/projects/airflow/datalake/logs/app-broken/:/app-logs/'],
+        volumes=[f'{DATALAKE_HOST}/logs/app-broken/:/app-logs/'],
         docker_url='unix://var/run/docker.sock'
     )
 
-    # TODO: Create teardown script
-    teardown = BashOperator(task_id='teardown', bash_command='date')
+    app_teardown = BashOperator(
+        task_id='app-teardown',
+        bash_command=f'bash {SCRIPTS_PATH}/app-teardown.sh\n'
+    )
 
-    initialize >> app_broken >> teardown
+    app_initialize >> app_broken >> app_teardown
