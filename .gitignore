@@ -1,23 +1,22 @@
 # OS files
 .DS_Store
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+# IDEs
+.vscode
+.idea
+
+# Dev Stuff
+datalake
+logs
+output
+
+# Python
+.venv
 *.manifest
 *.spec
-
-# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
-
-# Lake
-datalake
