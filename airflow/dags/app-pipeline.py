@@ -27,14 +27,28 @@ with DAG('app-pipeline', default_args=ARGS, schedule_interval='*/15 * * * *', ca
         bash_command=f'bash {SCRIPTS_PATH}/app-initialize.sh\n'
     )
 
+    app_extractor = DockerOperator(
+        task_id='app-extractor',
+        image='app-extractor:latest',
+        api_version='auto',
+        auto_remove=True,
+        network_mode='bridge',
+        environment={
+            'LAKE_PATH': '/datalake/transient/jokes',
+            'LOG_PATH': '/datalake/logs/app-extractor'
+        },
+        volumes=[f'{DATALAKE_HOST}:/datalake/'],
+        docker_url='unix://var/run/docker.sock'
+    )
+
     app_broken = DockerOperator(
         task_id='app-broken',
         image='app-broken:latest',
         api_version='auto',
         auto_remove=True,
         network_mode='bridge',
-        environment={'LOG_PATH': '/app-logs'},
-        volumes=[f'{DATALAKE_HOST}/logs/app-broken/:/app-logs/'],
+        environment={'LOG_PATH': '/datalake/logs/app-broken'},
+        volumes=[f'{DATALAKE_HOST}:/datalake/'],
         docker_url='unix://var/run/docker.sock'
     )
 
@@ -43,4 +57,4 @@ with DAG('app-pipeline', default_args=ARGS, schedule_interval='*/15 * * * *', ca
         bash_command=f'bash {SCRIPTS_PATH}/app-teardown.sh\n'
     )
 
-    app_initialize >> app_broken >> app_teardown
+    app_initialize >> app_extractor >> app_broken >> app_teardown
