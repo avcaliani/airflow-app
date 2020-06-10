@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.docker_operator import DockerOperator
+from airflow.operators.dummy_operator import DummyOperator  # FIXME: Remove this import
 
 
 SCRIPTS_PATH  = environ.get('SCRIPTS_PATH', '/airflow/scripts')
@@ -52,9 +53,13 @@ with DAG('app-pipeline', default_args=ARGS, schedule_interval='*/15 * * * *', ca
         docker_url='unix://var/run/docker.sock'
     )
 
+    # FIXME: Add Docker Operator
+    app_processor = DummyOperator(task_id='app-processor')
+
     app_teardown = BashOperator(
         task_id='app-teardown',
-        bash_command=f'bash {SCRIPTS_PATH}/app-teardown.sh\n'
+        bash_command=f'bash {SCRIPTS_PATH}/app-teardown.sh\n',
+        trigger_rule='none_skipped'
     )
 
-    app_initialize >> app_extractor >> app_broken >> app_teardown
+    app_initialize >> app_extractor >> app_broken >> app_processor >> app_teardown
