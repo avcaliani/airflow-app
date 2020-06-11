@@ -9,6 +9,7 @@
 datalake
 logs
 output
+data
 
 # Python
 .venv
