@@ -1,7 +1,7 @@
 # 🌬 Airflow
 By Anthony Vilarim Caliani
 
-[![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/docker-2.3.x-099cec.svg)](#) [![#](https://img.shields.io/badge/airflow-1.10.10-ff4757.svg)](#) [![#](https://img.shields.io/badge/postgres-12.x-336791.svg)](#) [![#](https://img.shields.io/badge/python-3.x-yellow.svg)](#) [![#](https://img.shields.io/badge/bash-ohh_yes!-lightgrey.svg)](#)
+[![#](https://img.shields.io/badge/licence-MIT-lightseagreen.svg)](#) [![#](https://img.shields.io/badge/docker-2.3.x-099cec.svg)](#) [![#](https://img.shields.io/badge/airflow-1.10.10-ff4757.svg)](#) [![#](https://img.shields.io/badge/postgres-12.x-336791.svg)](#) [![#](https://img.shields.io/badge/python-3.x-yellow.svg)](#) [![#](https://img.shields.io/badge/bash-ohh_yes!-brightgreen.svg)](#)
 
 This project is an experiment using [Apache Airflow](https://airflow.apache.org/).
 
