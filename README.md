@@ -36,6 +36,10 @@ docker-compose down
 
 > 💡 Airflow will be running at `http://localhost:8080/admin/`
 
+
+### Screenshot
+![screenshot](.docs/screenshot.png)
+
 ## Related Links
 - [Airflow: Trigger Rules](https://airflow.apache.org/docs/stable/concepts.html#trigger-rules)
 - [Medium: First Steps Using Airflow](https://medium.com/data-hackers/primeiros-passos-com-o-apache-airflow-etl-f%C3%A1cil-robusto-e-de-baixo-custo-f80db989edae)
