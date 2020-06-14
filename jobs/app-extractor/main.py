@@ -44,7 +44,7 @@ def save(data):
 def request():
     data = requests.get(API_URL).json()
     if data:
-        data['persisted_at'] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        data['persisted_at'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
     logging.debug(f'Response Data: {data}')
     return data
 

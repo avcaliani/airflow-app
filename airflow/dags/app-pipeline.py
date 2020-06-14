@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.docker_operator import DockerOperator
-from airflow.operators.dummy_operator import DummyOperator  # FIXME: Remove this import
-
 
 SCRIPTS_PATH  = environ.get('SCRIPTS_PATH', '/airflow/scripts')
 DATALAKE_HOST = environ.get('DATALAKE_HOST', './')
@@ -53,8 +51,20 @@ with DAG('app-pipeline', default_args=ARGS, schedule_interval='*/15 * * * *', ca
         docker_url='unix://var/run/docker.sock'
     )
 
-    # FIXME: Add Docker Operator
-    app_processor = DummyOperator(task_id='app-processor')
+    app_processor = DockerOperator(
+        task_id='app-processor',
+        image='app-processor:latest',
+        api_version='auto',
+        auto_remove=True,
+        network_mode='bridge',
+        environment={
+            'INPUT': '/datalake/transient/jokes/*.json',
+            'OUTPUT': '/datalake/raw/jokes',
+            'LOG_PATH': '/datalake/logs/app-processor'
+        },
+        volumes=[f'{DATALAKE_HOST}:/datalake/'],
+        docker_url='unix://var/run/docker.sock'
+    )
 
     app_teardown = BashOperator(
         task_id='app-teardown',

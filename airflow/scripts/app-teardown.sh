@@ -13,5 +13,7 @@ echo "***********************"
 echo "*** TEARDOWN SCRIPT ***"
 echo "***********************"
 
+rm -rf /datalake/transient/jokes/* || true
+
 echo "Execution finished at $(date '+%F %T'). See ya!"
 exit 0
