@@ -5,10 +5,8 @@ By Anthony Vilarim Caliani
 
 This project is an experiment using [Apache Airflow](https://airflow.apache.org/).
 
-## Architecture
-```bash
-# Soon...
-```
+## Diagram
+![diagram](.docs/diagram.jpg)
 
 ## Go! Go! Go!
 
@@ -18,7 +16,7 @@ When you share volumes between the Airflow Container and the Docker Operator Con
 Having it in mind, let's set up this variable to simplify volumes sharing during the processes.
 
 ```bash
-export DATALAKE_HOST_PATH=$(pwd)
+export DATALAKE_HOST_PATH="$(pwd)"
 ```
 
 ### Now, let's do this!
