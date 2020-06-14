@@ -24,7 +24,7 @@ export DATALAKE_HOST_PATH="$(pwd)"
 # First, build jobs related images.
 ./jobs/build-images.sh
 
-# Then, build Airflow image.
+# Then, build an Airflow image.
 docker-compose build
 
 # Finally, up the Airflow container \o/
