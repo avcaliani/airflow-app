@@ -40,7 +40,7 @@ docker-compose down
 ### Screenshot
 ![screenshot](.docs/screenshot.png)
 
-## Related Links
+### Related Links
 - [Airflow: Trigger Rules](https://airflow.apache.org/docs/stable/concepts.html#trigger-rules)
 - [Medium: First Steps Using Airflow](https://medium.com/data-hackers/primeiros-passos-com-o-apache-airflow-etl-f%C3%A1cil-robusto-e-de-baixo-custo-f80db989edae)
 - [Medium: Airflow Basic Configuration](https://medium.com/@apratamamia/airflow-basic-configuration-for-production-environment-2f69ab0c6f2c)
